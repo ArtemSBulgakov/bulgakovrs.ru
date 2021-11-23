@@ -65,6 +65,7 @@ jobs:
           branch: ${{ github.event.client_payload.data.branch }}
           directory: ${{ github.event.client_payload.data.directory }}
           platform: ${{ github.event.client_payload.data.platform }}
+      - run: cp ./out/404/index.html ./out/404.html
       - id: gh-pages
         name: Publishing to GitHub Pages...
         uses: JamesIves/github-pages-deploy-action@4.1.0

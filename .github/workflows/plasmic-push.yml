@@ -35,6 +35,7 @@ jobs:
           run: build
           branch: main
           skip_if_plasmic: true
+      - run: cp ./out/404/index.html ./out/404.html
       - id: gh-pages
         name: Publish to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@4.1.0

@@ -7,6 +7,7 @@ import {
   PlasmicRootProvider,
 } from "@plasmicapp/loader-react";
 import Error from "next/error";
+import Head from "next/head"
 import { PLASMIC } from "../plasmic-init";
 
 export default function PlasmicLoaderPage(props: {
@@ -17,12 +18,18 @@ export default function PlasmicLoaderPage(props: {
     return <Error statusCode={404} />;
   }
   return (
-    <PlasmicRootProvider
-      loader={PLASMIC}
-      prefetchedData={plasmicData}
-    >
-      <PlasmicComponent component={plasmicData.entryCompMetas[0].name} />
-    </PlasmicRootProvider>
+    <>
+      <Head>
+        <title>404</title>
+        <meta name="robots" content="noindex" />
+      </Head>
+      <PlasmicRootProvider
+        loader={PLASMIC}
+        prefetchedData={plasmicData}
+      >
+        <PlasmicComponent component={plasmicData.entryCompMetas[0].name} />
+      </PlasmicRootProvider>
+    </>
   );
 }
 
@@ -41,20 +48,5 @@ export const getStaticProps: GetStaticProps = async (context) => {
   return {
     // non-Plasmic catch-all
     props: {},
-  };
-}
-
-export const getStaticPaths: GetStaticPaths = async () => {
-  const pageModules = await PLASMIC.fetchPages();
-  return {
-    paths: pageModules.filter((mod)=>mod.path !== "/404").map((mod) => ({
-      params: {
-        catchall: mod.path.substring(1).split("/"),
-      },
-    })),
-
-    // Turn on "fallback: 'blocking'" if you would like new paths created
-    // in Plasmic to be automatically available
-    fallback: false,
   };
 }
